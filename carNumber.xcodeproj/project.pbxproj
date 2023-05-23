@@ -19,6 +19,7 @@
 		5666FC192A17127D007C3B4F /* ImageCaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5666FC182A17127D007C3B4F /* ImageCaptureViewController.swift */; };
 		5666FC1B2A17128F007C3B4F /* ImageCaputrePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5666FC1A2A17128F007C3B4F /* ImageCaputrePresenter.swift */; };
 		5666FC1D2A17A810007C3B4F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5666FC1C2A17A810007C3B4F /* Toast.swift */; };
+		5666FC202A186F13007C3B4F /* TextRecog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5666FC1F2A186F13007C3B4F /* TextRecog.swift */; };
 		904FD80A5C85390F6B957FDD /* Pods_carNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED68A7EA81C1B789FAF70A7D /* Pods_carNumber.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		5666FC182A17127D007C3B4F /* ImageCaptureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCaptureViewController.swift; sourceTree = "<group>"; };
 		5666FC1A2A17128F007C3B4F /* ImageCaputrePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCaputrePresenter.swift; sourceTree = "<group>"; };
 		5666FC1C2A17A810007C3B4F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		5666FC1F2A186F13007C3B4F /* TextRecog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecog.swift; sourceTree = "<group>"; };
 		CEAC0997ACB77371E67D2040 /* Pods-carNumber.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-carNumber.release.xcconfig"; path = "Target Support Files/Pods-carNumber/Pods-carNumber.release.xcconfig"; sourceTree = "<group>"; };
 		ED68A7EA81C1B789FAF70A7D /* Pods_carNumber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_carNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -82,7 +84,7 @@
 		5666FBF52A1709B4007C3B4F /* carNumber */ = {
 			isa = PBXGroup;
 			children = (
-				5666FC1C2A17A810007C3B4F /* Toast.swift */,
+				5666FC1E2A186EF1007C3B4F /* Util */,
 				5666FC172A17124A007C3B4F /* ImageCaptureView */,
 				5666FC0D2A170B84007C3B4F /* Tabbar */,
 				5666FBF62A1709B4007C3B4F /* AppDelegate.swift */,
@@ -113,6 +115,15 @@
 			path = ImageCaptureView;
 			sourceTree = "<group>";
 		};
+		5666FC1E2A186EF1007C3B4F /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				5666FC1C2A17A810007C3B4F /* Toast.swift */,
+				5666FC1F2A186F13007C3B4F /* TextRecog.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		79A42F290E1098E6C9D33012 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +152,8 @@
 				5666FBEF2A1709B4007C3B4F /* Sources */,
 				5666FBF02A1709B4007C3B4F /* Frameworks */,
 				5666FBF12A1709B4007C3B4F /* Resources */,
+				776458EE0FD6C484629642DD /* [CP] Embed Pods Frameworks */,
+				514AEAE6BCA150C3474AAF1A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -227,6 +240,40 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		514AEAE6BCA150C3474AAF1A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-carNumber/Pods-carNumber-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-carNumber/Pods-carNumber-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-carNumber/Pods-carNumber-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		776458EE0FD6C484629642DD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-carNumber/Pods-carNumber-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-carNumber/Pods-carNumber-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-carNumber/Pods-carNumber-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -236,6 +283,7 @@
 			files = (
 				5666FC192A17127D007C3B4F /* ImageCaptureViewController.swift in Sources */,
 				5666FC1D2A17A810007C3B4F /* Toast.swift in Sources */,
+				5666FC202A186F13007C3B4F /* TextRecog.swift in Sources */,
 				5666FC112A170B84007C3B4F /* MainTabViewController.swift in Sources */,
 				5666FC152A170D45007C3B4F /* OpenCVwrapper.mm in Sources */,
 				5666FBF72A1709B4007C3B4F /* AppDelegate.swift in Sources */,

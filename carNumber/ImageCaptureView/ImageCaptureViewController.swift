@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-
 import SnapKit
 
 class ImageCaptureViewController: UIViewController {
@@ -16,13 +15,36 @@ class ImageCaptureViewController: UIViewController {
     
     private lazy var imagePickerController = UIImagePickerController()
     
+    private lazy var textCog = TextRecog()
+    
     private lazy var ImageView: UIImageView = {
+        
         let ImageView = UIImageView()
         ImageView.backgroundColor = .gray
         
         return ImageView
         
     }()
+    
+    private lazy var titleLabel: UILabel = {
+        
+        let label = UILabel()
+        label.text = "차량 번호 : "
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
+    private lazy var carNumberLabel: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
+    
     
     
     private lazy var CaptureImageButton: UIButton = {
@@ -82,23 +104,34 @@ extension ImageCaptureViewController: ImageCaputreProtocol {
         
         navigationItem.title = "번호판 캡처 및 인식"
         
+        let labelStackView = UIStackView(arrangedSubviews: [titleLabel, carNumberLabel])
+        labelStackView.axis = .horizontal
+        labelStackView.distribution = .fillEqually
+        labelStackView.spacing = 8.0
+        
+        
         let buttonStackView = UIStackView(arrangedSubviews: [CaptureImageButton, LoadImageButton, SaveImageButton])
         buttonStackView.axis = .vertical
         buttonStackView.distribution = .fillEqually
         buttonStackView.spacing = 8.0
         
-        [ImageView, buttonStackView].forEach {
+        [ImageView, labelStackView, buttonStackView].forEach {
             self.view.addSubview($0)
         }
         
         ImageView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview().inset(8.0)
+            $0.leading.trailing.equalToSuperview().inset(16.0)
             $0.height.equalTo(UIScreen.main.bounds.height / 2)
         }
         
+        labelStackView.snp.makeConstraints {
+            $0.top.equalTo(ImageView.snp.bottom).offset(16.0)
+            $0.leading.trailing.equalToSuperview().inset(16.0)
+        }
+        
         buttonStackView.snp.makeConstraints {
-            $0.top.equalTo(ImageView.snp.bottom).offset(8.0)
+            $0.top.equalTo(labelStackView.snp.bottom).offset(16.0)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(24.0)
             $0.leading.trailing.equalToSuperview().inset(16.0)
         }
@@ -151,6 +184,11 @@ extension ImageCaptureViewController: UIImagePickerControllerDelegate {
         guard let PickImage = info[.originalImage] as? UIImage else {
             fatalError("이미지 로드 실패")
         }
+        
+        textCog.UIimageRecog(image: PickImage)
+        
+        carNumberLabel.text = textCog.getRecogText()
+        
         
         ImageView.image = PickImage
         

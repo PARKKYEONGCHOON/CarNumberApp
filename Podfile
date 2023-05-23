@@ -7,4 +7,5 @@ target 'carNumber' do
 
   # Pods for carNumber
   pod 'OpenCV'
+  pod 'GoogleMLKit/TextRecognitionKorean', '3.2.0'
 end

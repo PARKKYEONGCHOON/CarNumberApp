@@ -17,33 +17,39 @@ class TextRecog {
     lazy var koreanTextRecognizer = TextRecognizer.textRecognizer(options: koreanOptions)
     var recogtext = ""
     
-    func UIimageRecog(image: UIImage) {
+    
+    
+    func UIimageRecog(image: UIImage) -> String{
         
         
         
         let image = VisionImage(image: image)
         image.orientation = self.imageOrientation(deviceOrientation: UIDevice.current.orientation, cameraPosition: .back)
         
-        koreanTextRecognizer.process(image) { result, error in
-            guard error == nil, let result = result else {
-                // Error handling
-                print("error")
+        
+        koreanTextRecognizer.process(image) { features, error in
+            self.koreanTextRecognizer.process(image) { result, error in
+                guard error == nil, let result = result else {
+                    // Error handling
+                    print("TextRecognizer Fail")
+                    return
+                }
+                let resultText = result.text
+                print("resultText: \(resultText)")
                 
-                return
+                
+              
+              
+               for block in result.blocks {
+                   self.recogtext += block.text
+               }
+                
+                print("self.recogtext: \(self.recogtext)")
             }
-            let resultText = result.text
-            print("resultText: \(resultText)")
-            
-            
-          
-          
-           for block in result.blocks {
-               self.recogtext += block.text
-           }
-            
-            print("self.recogtext: \(self.recogtext)")
         }
         
+
+        return self.recogtext
         
         
     }

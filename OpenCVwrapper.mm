@@ -32,5 +32,62 @@ using namespace cv;
     
 }
 
++ (UIImage *)toGaussianBlur:(UIImage *)image {
+    
+    cv::Mat imageMat;
+    
+    UIImageToMat(image, imageMat);
+    
+    cv::Mat grayMat;
+    cv::cvtColor(imageMat, grayMat, COLOR_BGR2GRAY);
+    
+    cv::Mat blurMat;
+    cv::GaussianBlur(grayMat, blurMat, cv::Size(5,5), 0);
+    
+    
+    
+    return MatToUIImage(blurMat);
+    
+    
+}
+
++ (UIImage *)toCanny:(UIImage *)image {
+    
+    cv::Mat imageMat;
+    
+    UIImageToMat(image, imageMat);
+    
+    cv::Mat grayMat;
+    cv::cvtColor(imageMat, grayMat, COLOR_BGR2GRAY);
+    
+    cv::Mat blurMat;
+    cv::GaussianBlur(grayMat, blurMat, cv::Size(5,5), 0);
+    
+    cv::Mat CannyMat;
+    cv::Canny(grayMat, CannyMat, 100, 300);
+    
+    
+    return MatToUIImage(CannyMat);
+    
+    
+}
+
++ (UIImage *)toThreshold:(UIImage *)image {
+    
+    cv::Mat imageMat;
+    
+    UIImageToMat(image, imageMat);
+    
+    cv::Mat grayMat;
+    cv::cvtColor(imageMat, grayMat, COLOR_BGR2GRAY);
+    
+    cv::Mat thresholdMat;
+    cv::threshold(grayMat, thresholdMat, 127, 255, THRESH_BINARY);
+    
+    
+    return MatToUIImage(thresholdMat);
+    
+}
+
 
 @end

@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 import SnapKit
+import MLKitTextRecognitionKorean
+import AVFoundation
+import MLKitVision
 
 class ImageCaptureViewController: UIViewController {
     
@@ -15,7 +18,8 @@ class ImageCaptureViewController: UIViewController {
     
     private lazy var imagePickerController = UIImagePickerController()
     
-    private lazy var textCog = TextRecog()
+    private var koreanOptions = KoreanTextRecognizerOptions()
+    private lazy var koreanTextRecognizer = TextRecognizer.textRecognizer(options: koreanOptions)
     
     private lazy var ImageView: UIImageView = {
         
@@ -168,6 +172,29 @@ extension ImageCaptureViewController: ImageCaputreProtocol {
     
 }
 
+extension ImageCaptureViewController {
+    
+    func imageOrientation(
+      deviceOrientation: UIDeviceOrientation,
+      cameraPosition: AVCaptureDevice.Position
+    ) -> UIImage.Orientation {
+      switch deviceOrientation {
+          case .portrait:
+            return cameraPosition == .front ? .leftMirrored : .right
+          case .landscapeLeft:
+            return cameraPosition == .front ? .downMirrored : .up
+          case .portraitUpsideDown:
+            return cameraPosition == .front ? .rightMirrored : .left
+          case .landscapeRight:
+            return cameraPosition == .front ? .upMirrored : .down
+          case .faceDown, .faceUp, .unknown:
+            return .up
+      }
+    }
+    
+    
+}
+
 extension ImageCaptureViewController: UINavigationControllerDelegate {
     
     
@@ -185,12 +212,40 @@ extension ImageCaptureViewController: UIImagePickerControllerDelegate {
             fatalError("이미지 로드 실패")
         }
         
-        textCog.UIimageRecog(image: PickImage)
+        let grayImage = OpenCVwrapper.toGray(PickImage)
+        let blurImage = OpenCVwrapper.toGaussianBlur(PickImage)
+        let cannyImage = OpenCVwrapper.toCanny(PickImage)
+        let thresholdImage = OpenCVwrapper.toThreshold(PickImage)
         
-        carNumberLabel.text = textCog.getRecogText()
+        let image = VisionImage(image: thresholdImage)
+        image.orientation = self.imageOrientation(deviceOrientation: UIDevice.current.orientation, cameraPosition: .back)
         
         
-        ImageView.image = PickImage
+        
+        
+        koreanTextRecognizer.process(image) { features, error in
+            self.koreanTextRecognizer.process(image) { result, error in
+                guard error == nil, let result = result else {
+                    // Error handling
+                    print("TextRecognizer Fail")
+                    
+                    DispatchQueue.main.async {
+                        self.carNumberLabel.text = "인식 에러"
+                        self.ImageView.image = PickImage
+                    }
+                    
+                    return
+                }
+                let resultText = result.text
+                print("resultText: \(resultText)")
+            
+                DispatchQueue.main.async {
+                    self.carNumberLabel.text = result.blocks[0].text + " " + result.blocks[1].text
+                    self.ImageView.image = thresholdImage
+                }
+                
+            }
+        }
         
     }
     

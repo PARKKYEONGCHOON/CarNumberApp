@@ -7,10 +7,16 @@
 
 #import <Foundation/Foundation.h>
 #import "OpenCVwrapper.h"
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OpenCVwrapper : NSObject
+
++ (UIImage *)toGray:(UIImage *)image;
++ (UIImage *)toGaussianBlur:(UIImage *)image;
++ (UIImage *)toCanny:(UIImage *)image;
++ (UIImage *)toThreshold:(UIImage *)image;
 
 @end
 

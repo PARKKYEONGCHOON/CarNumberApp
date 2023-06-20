@@ -16,6 +16,46 @@ using namespace cv;
 
 #pragma mark Public
 
++ (UIImage *)classifyImage:(UIImage *) image {
+    cv::Mat colorMat;
+    UIImageToMat(image, colorMat);
+    
+    cv::Mat grayMat;
+    cv::cvtColor(colorMat, grayMat, COLOR_BGR2GRAY);
+    
+    cv::CascadeClassifier classifier;
+    const NSString* cascadePath = [[NSBundle mainBundle]
+                                   pathForResource:@"haarcascade_frontalface_default" ofType:@"xml"];
+    
+    classifier.load([cascadePath UTF8String]);
+    
+    std::vector<cv::Rect> detections;
+    
+    const double scalingFactor = 1.1;
+    const int minNeighbors = 2;
+    const int flags = 0;
+    const cv::Size minimumSize(300, 300);
+    
+    classifier.detectMultiScale(grayMat, detections, scalingFactor, minNeighbors,flags,minimumSize);
+    
+    if(detections.size() <= 0){
+        return nil;
+    }
+    
+    for (auto &face : detections) {
+        const cv::Point tl(face.x, face.y);
+        const cv::Point br = tl + cv::Point(face.width, face.height);
+        const cv::Scalar magenta = cv::Scalar(255, 0, 255);
+        
+        cv::rectangle(colorMat, tl, br, magenta, 4, 8, 0);
+        
+        
+    }
+    
+    return MatToUIImage(colorMat);
+    
+}
+
 + (UIImage *)toGray:(UIImage *)image {
     
     cv::Mat imageMat;
@@ -88,6 +128,22 @@ using namespace cv;
     return MatToUIImage(thresholdMat);
     
 }
+
++ (UIImage *)drawLine:(UIImage *)image:(int)x1:(int)y1:(int)x2:(int)y2:(int)r:(int)g:(int)b:(int)thick {
+    
+    cv::Mat imageMat;
+    
+    UIImageToMat(image, imageMat);
+    
+    cv::Mat lineimageMat;
+    
+    cv::line(imageMat, cv::Point(x1,y1), cv::Point(x2,y2), cv::Scalar(r,g,b), thick, 8, 0);
+    
+    
+    return MatToUIImage(imageMat);
+    
+}
+
 
 
 @end

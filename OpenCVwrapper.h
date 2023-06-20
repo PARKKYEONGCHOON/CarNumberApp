@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)toGaussianBlur:(UIImage *)image;
 + (UIImage *)toCanny:(UIImage *)image;
 + (UIImage *)toThreshold:(UIImage *)image;
++ (UIImage *)classifyImage:(UIImage *)image;
 
 @end
 
